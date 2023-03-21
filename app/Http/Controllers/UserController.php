@@ -8,31 +8,32 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $users = User::get();
         return $users;
     }
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required | email',
             'password' => 'required| min:6'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return $validator->message();
         }
-        $insert = User::insert($request->all());
-        return $insert;
+        $data = $request->all();
+        return User::create($data);
     }
- 
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        return User::find($id);
     }
 
     /**
@@ -40,7 +41,11 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return User::find($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
     }
 
     /**
@@ -48,6 +53,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::find($id)->delete();
     }
 }
