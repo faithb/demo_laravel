@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    protected $userRepository;
+    
     public function index()
     {
         $users = User::get();
